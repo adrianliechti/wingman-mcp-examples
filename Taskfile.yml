@@ -1,0 +1,17 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  bridge:
+    dir: bridge
+    cmds:
+      - uv run main.py
+
+  stock-mcp:
+    dir: stock-mcp
+    cmds:
+      - uv run main.py
+
+  dev:
+    deps: [bridge, stock-mcp]
