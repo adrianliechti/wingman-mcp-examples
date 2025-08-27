@@ -1185,6 +1185,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "fastmcp" },
+    { name = "httpx" },
     { name = "pydantic" },
     { name = "scipy" },
     { name = "yfinance" },
@@ -1193,6 +1194,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "fastmcp", specifier = ">=2.11.2" },
+    { name = "httpx", specifier = ">=0.24.0" },
     { name = "pydantic", specifier = ">=2.11.7" },
     { name = "scipy", specifier = ">=1.16.1" },
     { name = "yfinance", specifier = ">=0.2.65" },

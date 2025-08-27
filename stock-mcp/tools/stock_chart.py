@@ -1,27 +1,11 @@
-from fastmcp import FastMCP
-from pydantic import BaseModel, Field
+from pydantic import Field
 from typing import Annotated, Optional
+import base64
+
+from fastmcp import FastMCP
+from mcp.types import EmbeddedResource, BlobResourceContents
+
 import yfinance as yf
-
-
-class StockChart(BaseModel):
-    """HTML chart response for stock data visualization using D3.js"""
-    
-    symbol: str = Field(description="Stock ticker symbol")
-    chart_type: str = Field(description="Type of chart generated (line, candlestick, area)")
-    period: str = Field(description="Time period of the data")
-    html: str = Field(description="Complete HTML page with embedded D3.js chart")
-    
-    model_config = {
-        "json_schema_extra": {
-            "example": {
-                "symbol": "AAPL",
-                "chart_type": "line",
-                "period": "1mo",
-                "html": "<!DOCTYPE html><html><head>...</head><body><div id='container'></div><script>...</script></body></html>"
-            }
-        }
-    }
 
 def register_stock_chart(mcp: FastMCP):
     @mcp.tool(
@@ -51,7 +35,7 @@ def register_stock_chart(mcp: FastMCP):
         end: Annotated[Optional[str], Field(
             description="End date (YYYY-MM-DD), exclusive. Used with start date."
         )] = None
-    ) -> StockChart:
+    ) -> EmbeddedResource:
         """Create a beautiful, interactive stock chart that opens in your browser.
         
         This tool generates a professional-looking chart showing stock price movements
@@ -421,9 +405,15 @@ def register_stock_chart(mcp: FastMCP):
 </body>
 </html>"""
         
-        return StockChart(
-            symbol=symbol.upper(),
-            chart_type=chart_type,
-            period=actual_period,
-            html=html
+        # Base64 encode the HTML content
+        html_bytes = html.encode('utf-8')
+        html_base64 = base64.b64encode(html_bytes).decode('ascii')
+        
+        return EmbeddedResource(
+            type="resource",
+            resource=BlobResourceContents(
+                uri=f"ui://data/chart/{symbol}",
+                mimeType="text/html",
+                blob=html_base64,
+            )
         )

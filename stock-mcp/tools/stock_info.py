@@ -1,8 +1,9 @@
-from fastmcp import FastMCP
 from pydantic import BaseModel, Field
 from typing import Annotated, Optional, Union
-import yfinance as yf
 
+from fastmcp import FastMCP
+
+import yfinance as yf
 
 class StockInfo(BaseModel):
     """Comprehensive stock information model for LLM interactions"""

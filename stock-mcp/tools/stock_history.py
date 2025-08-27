@@ -1,9 +1,10 @@
-from fastmcp import FastMCP
+from datetime import datetime, date
 from pydantic import BaseModel, Field
 from typing import Annotated, Optional, Union, Dict
-import yfinance as yf
-from datetime import datetime, date
 
+from fastmcp import FastMCP
+
+import yfinance as yf
 
 class HistoricalBar(BaseModel):
     """Single OHLCV bar of historical price data"""
