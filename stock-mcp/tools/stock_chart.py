@@ -415,5 +415,8 @@ def register_stock_chart(mcp: FastMCP):
                 uri=f"ui://data/chart/{symbol}",
                 mimeType="text/html",
                 blob=html_base64,
+                _meta={
+                    "mcpui.dev/ui-preferred-frame-size": ['800px', '1000px']
+                }
             )
         )
